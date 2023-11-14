@@ -2,9 +2,7 @@ import os
 import tkinter as tk
 from pytube import YouTube
 from tkinter import filedialog, messagebox
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
+
 
 class YouTubeDownloaderGUI:
     def __init__(self, root):
@@ -15,7 +13,6 @@ class YouTubeDownloaderGUI:
         self.output_path = tk.StringVar()
         self.video_url = tk.StringVar()
         self.download_option = tk.StringVar(value="video")  # Default is video
-
 
         # Create GUI elements
         self.create_widgets()
@@ -53,22 +50,20 @@ class YouTubeDownloaderGUI:
 
 
         download_type = self.download_option.get()
-        if download_type == "video":
 
+        if download_type == "video":
             yt = YouTube(self.video_url.get())
             video = yt.streams.get_highest_resolution()
-
             # download the video
             video.download(self.output_path.get())
-
             # Example: Display a message with the selected output path and video URL
             messagebox.showinfo("Info", f"Downloading video from {self.video_url.get()} to {self.output_path.get()}")
 
         elif download_type == "audio":
             yt = YouTube(self.video_url.get())
             audio = yt.streams.filter(only_audio=True).first()
-
             audio.download(self.output_path.get(),filename=f"{yt.title}.mp3")
+            # Example: Display a message with the selected output path and file URL
             messagebox.showinfo("Info", f"Downloading audio from {self.video_url.get()} to {self.output_path.get()}")
 
 
@@ -77,10 +72,8 @@ if __name__ == "__main__":
     app = YouTubeDownloaderGUI(root)
     root.mainloop()
 
-
 def download_video_from_youtube(link, path):
     yt = YouTube(link)
     video = yt.streams.get_highest_resolution()
-
     # download the video
     video.download(path)
